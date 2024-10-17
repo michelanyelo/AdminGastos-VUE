@@ -4,6 +4,7 @@ import AlertaComp from './AlertaComp.vue';
 
 const presupuesto = ref(0)
 const error = ref('')
+const emit = defineEmits(["definir-presupuesto"])
 
 const definirPresupuesto = () => {
     if (presupuesto.value <= 0) {
@@ -11,9 +12,9 @@ const definirPresupuesto = () => {
         setTimeout(() => {
             error.value = ""
         }, 2000)
-    } else {
-        error.value = ""
     }
+
+    emit("definir-presupuesto", presupuesto.value)
 }
 
 </script>
