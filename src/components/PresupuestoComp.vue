@@ -1,11 +1,18 @@
 <script setup>
 import { ref } from 'vue';
+import AlertaComp from './AlertaComp.vue';
 
 const presupuesto = ref(0)
+const error = ref('')
 
 const definirPresupuesto = () => {
-    if (presupuesto <= 0) {
-        alert('El presupuesto debe ser mayor a 0')
+    if (presupuesto.value <= 0) {
+        error.value = "Presupuesto no válido"
+        setTimeout(() => {
+            error.value = ""
+        }, 2000)
+    } else {
+        error.value = ""
     }
 }
 
@@ -13,10 +20,14 @@ const definirPresupuesto = () => {
 
 <template>
     <form class="presupuesto" @submit.prevent="definirPresupuesto">
+        <!-- Alerta slot -->
+        <AlertaComp v-if="error.length">
+            {{ error }}
+        </AlertaComp>
         <div class="campo">
             <label for="nuevo-presupuesto">Definir Presupuesto</label>
-            <input v-model.number="presupuesto" min="0" type="number" id="nuevo-presupuesto" placeholder="Añade tu presupuesto"
-                class="nuevo-presupuesto">
+            <input v-model.number="presupuesto" min="0" type="number" id="nuevo-presupuesto"
+                placeholder="Añade tu presupuesto" class="nuevo-presupuesto">
         </div>
         <input type="submit" value="Definir Presupuesto">
     </form>
