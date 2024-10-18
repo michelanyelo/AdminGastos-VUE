@@ -13,6 +13,14 @@ const modal = reactive({
   animar: false
 })
 
+const gasto = reactive({
+  id: null,
+  fecha: Date.now(),
+  nombre: '',
+  cantidad: '',
+  categoria: ''
+})
+
 const definirPresupuesto = (cantidad) => {
   presupuesto.value = disponible.value = cantidad
 }
@@ -47,7 +55,8 @@ const cerrarModal = () => {
       <div class="crear-gasto">
         <img :src="iconoNuevoGasto" alt="Icono nuevo gasto" @click="mostrarModal">
       </div>
-      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" :modal="modal"/>
+      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" :modal="modal" v-model:nombre="gasto.nombre"
+        v-model:cantidad="gasto.cantidad" v-model:categoria="gasto.categoria" />
     </main>
   </div>
 </template>
