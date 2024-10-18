@@ -1,6 +1,6 @@
 <script setup>
 import cerrarModal from "../assets/img/cerrar.svg"
-const emit = defineEmits(["cerrar-modal"])
+const emit = defineEmits(["cerrar-modal", "update:nombre", "update:cantidad", "update:categoria"])
 const props = defineProps({
     modal: {
         type: Object,
@@ -32,18 +32,19 @@ const props = defineProps({
                 <legend>Añadir Gasto</legend>
                 <div class="campo">
                     <label for="nombre">Nombre Gasto:</label>
-                    <input type="text" id="nombre" placeholder="Añade el nombre del gasto" :value="nombre">
+                    <input type="text" id="nombre" placeholder="Añade el nombre del gasto" :value="nombre"
+                        @input="$emit('update:nombre', $event.target.value)">
                 </div>
 
                 <div class="campo">
                     <label for="cantidad">Cantidad:</label>
                     <input type="text" id="cantidad" placeholder="Añade la cantidad del gasto, ej. 3000"
-                        :value="cantidad">
+                        :value="cantidad" @input="$emit('update:cantidad', +$event.target.value)">
                 </div>
 
                 <div class="campo">
                     <label for="categoria">Categoria:</label>
-                    <select id="categoria" :value="categoria">
+                    <select id="categoria" :value="categoria" @input="$emit('update:categoria', $event.target.value)">
                         <option value="">-- Selecione --</option>
                         <option value="ahorro">Ahorro</option>
                         <option value="comida">Comida</option>
@@ -87,6 +88,7 @@ const props = defineProps({
     opacity: 0;
     transform: scale(0.9);
     visibility: hidden;
+    padding: 6rem;
 }
 
 .contenedor-formulario.animar {
