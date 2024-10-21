@@ -3,6 +3,8 @@ import PresupuestoComp from './components/PresupuestoComp.vue';
 import ControlPresupuesto from './components/ControlPresupuesto.vue';
 import ModalComp from './components/ModalComp.vue';
 import iconoNuevoGasto from "./assets/img/nuevo-gasto.svg"
+import { generarID } from './helpers/index.js'
+
 import { ref, reactive } from "vue";
 
 const presupuesto = ref(0)
@@ -20,6 +22,9 @@ const gasto = reactive({
   cantidad: '',
   categoria: ''
 })
+
+// Arreglo de gastos
+const gastos = ref([])
 
 const definirPresupuesto = (cantidad) => {
   presupuesto.value = disponible.value = cantidad
@@ -41,8 +46,11 @@ const cerrarModal = () => {
 }
 
 const guardarGasto = () => {
-  console.log("Desde app.vue")
-  console.log(gasto)
+  gastos.value.push({
+    ...gasto,
+    id: generarID()
+  })
+  console.log(gastos)
 }
 </script>
 
@@ -60,8 +68,8 @@ const guardarGasto = () => {
       <div class="crear-gasto">
         <img :src="iconoNuevoGasto" alt="Icono nuevo gasto" @click="mostrarModal">
       </div>
-      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" @guardar-gasto="guardarGasto" :modal="modal" v-model:nombre="gasto.nombre"
-        v-model:cantidad="gasto.cantidad" v-model:categoria="gasto.categoria" />
+      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" @guardar-gasto="guardarGasto" :modal="modal"
+        v-model:nombre="gasto.nombre" v-model:cantidad="gasto.cantidad" v-model:categoria="gasto.categoria" />
     </main>
   </div>
 </template>
