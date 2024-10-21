@@ -4,7 +4,7 @@ import cerrarModal from "../assets/img/cerrar.svg"
 import AlertaComp from "./AlertaComp.vue"
 
 const error = ref('')
-const emit = defineEmits(["cerrar-modal", "update:nombre", "update:cantidad", "update:categoria"])
+const emit = defineEmits(["cerrar-modal", "guardar-gasto", "update:nombre", "update:cantidad", "update:categoria"])
 const props = defineProps({
     modal: {
         type: Object,
@@ -48,7 +48,7 @@ const agregarGasto = () => {
         return
     }
 
-    console.log("Emitiendo gastos...")
+    emit('guardar-gasto')
 
 }
 </script>

@@ -39,6 +39,11 @@ const cerrarModal = () => {
     modal.mostrar = false
   }, 300);
 }
+
+const guardarGasto = () => {
+  console.log("Desde app.vue")
+  console.log(gasto)
+}
 </script>
 
 <template>
@@ -55,7 +60,7 @@ const cerrarModal = () => {
       <div class="crear-gasto">
         <img :src="iconoNuevoGasto" alt="Icono nuevo gasto" @click="mostrarModal">
       </div>
-      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" :modal="modal" v-model:nombre="gasto.nombre"
+      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" @guardar-gasto="guardarGasto" :modal="modal" v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad" v-model:categoria="gasto.categoria" />
     </main>
   </div>
