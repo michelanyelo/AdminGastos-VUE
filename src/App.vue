@@ -35,6 +35,14 @@ watch(gastos, () => {
   deep: true
 })
 
+watch(modal, () => {
+  if (!modal.mostrar) {
+    reiniciarGasto()
+  }
+}, {
+  deep: true
+})
+
 const definirPresupuesto = (cantidad) => {
   presupuesto.value = disponible.value = cantidad
 }
@@ -60,6 +68,10 @@ const guardarGasto = () => {
     id: generarID()
   })
   cerrarModal()
+  reiniciarGasto()
+}
+
+const reiniciarGasto = () => {
   Object.assign(gasto, {
     id: null,
     fecha: Date.now(),
@@ -67,6 +79,12 @@ const guardarGasto = () => {
     cantidad: '',
     categoria: ''
   })
+}
+
+const seleccionarGasto = id => {
+  const gastoEditar = gastos.value.filter(gasto => gasto.id === id)[0]
+  Object.assign(gasto, gastoEditar)
+  mostrarModal()
 }
 </script>
 
@@ -83,14 +101,15 @@ const guardarGasto = () => {
     <main v-if="presupuesto > 0">
       <div class="listado-gastos contenedor">
         <h2>{{ gastos.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
-        <GastoComp v-for="gasto in gastos" :key="gasto.id" :gasto="gasto" />
+        <GastoComp v-for="gasto in gastos" :key="gasto.id" :gasto="gasto" @seleccionar-gasto="seleccionarGasto" />
       </div>
 
       <div class="crear-gasto">
         <img :src="iconoNuevoGasto" alt="Icono nuevo gasto" @click="mostrarModal">
       </div>
-      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" @guardar-gasto="guardarGasto" :modal="modal" :disponible="disponible"
-        v-model:nombre="gasto.nombre" v-model:cantidad="gasto.cantidad" v-model:categoria="gasto.categoria" />
+      <ModalComp v-if="modal.mostrar" @cerrar-modal="cerrarModal" @guardar-gasto="guardarGasto" :modal="modal"
+        :disponible="disponible" v-model:nombre="gasto.nombre" v-model:cantidad="gasto.cantidad"
+        v-model:categoria="gasto.categoria" />
     </main>
   </div>
 </template>
