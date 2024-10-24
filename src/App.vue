@@ -62,11 +62,31 @@ const cerrarModal = () => {
   }, 300);
 }
 
+// const guardarGasto = () => {
+//   if (gasto.id) {
+//     // Editando
+//     const { id } = gasto
+//     const i = gastos.value.findIndex(gasto => gasto.id === id)
+//     gastos.value[i] = { ...gasto }
+//   } else {
+//     // Agregando
+//     gastos.value.push({
+//       ...gasto,
+//       id: generarID()
+//     })
+//   }
+
+//   cerrarModal()
+//   reiniciarGasto()
+// }
+
 const guardarGasto = () => {
-  gastos.value.push({
-    ...gasto,
-    id: generarID()
-  })
+  const index = gastos.value.findIndex(g => g.id === gasto.id)
+
+  index >= 0
+    ? gastos.value[index] = { ...gasto }
+    : gastos.value.push({ ...gasto, id: generarID() })
+
   cerrarModal()
   reiniciarGasto()
 }
