@@ -3,13 +3,15 @@ import PresupuestoComp from './components/PresupuestoComp.vue';
 import ControlPresupuesto from './components/ControlPresupuesto.vue';
 import GastoComp from './components/GastoComp.vue';
 import ModalComp from './components/ModalComp.vue';
+import FiltrosComp from './components/FiltrosComp.vue';
 import iconoNuevoGasto from "./assets/img/nuevo-gasto.svg"
 import { generarID } from './helpers/index.js'
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 
 const presupuesto = ref(0)
 const disponible = ref(0)
 const gastado = ref(0)
+const filtro = ref('')
 
 const modal = reactive({
   mostrar: false,
@@ -112,8 +114,14 @@ const eliminarGasto = () => {
     gastos.value = gastos.value.filter(gastoState => gastoState.id !== gasto.id)
     cerrarModal()
   }
-
 }
+
+const gastosFiltrados = computed(() => {
+  if (filtro.value) {
+    return gastos.value.filter(gasto => gasto.categoria === filtro.value)
+  }
+  return gastos.value
+})
 </script>
 
 <template>
@@ -127,9 +135,11 @@ const eliminarGasto = () => {
     </header>
 
     <main v-if="presupuesto > 0">
+      <FiltrosComp v-model:filtro="filtro" />
       <div class="listado-gastos contenedor">
-        <h2>{{ gastos.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
-        <GastoComp v-for="gasto in gastos" :key="gasto.id" :gasto="gasto" @seleccionar-gasto="seleccionarGasto" />
+        <h2>{{ gastosFiltrados.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
+        <GastoComp v-for="gasto in gastosFiltrados" :key="gasto.id" :gasto="gasto"
+          @seleccionar-gasto="seleccionarGasto" />
       </div>
 
       <div class="crear-gasto">
